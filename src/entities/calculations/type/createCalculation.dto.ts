@@ -1,32 +1,32 @@
 export interface FuelComposition {
-  methane: number; // CH4
-  ethane: number; // C2H6
-  propane: number; // C3H8
-  nButane: number; // C4H10
-  isoButane: number; // C4H10
-  pentane: number; // C5H12
-  hydrogen: number; // H2
-  ethylene: number; // C2H4
-  propylene: number; // C3H6
-  butylene: number; // C4H8
-  acetylene: number; // C2H2
-  hydrogenSulfide: number; // H2S
-  carbonMonoxide: number; // CO
-  carbonDioxide: number; // CO2
-  nitrogen: number; // N2
-  oxygen: number; // O2
+  methanePercentage: number; // CH4
+  ethanePercentage: number; // C2H6
+  propanePercentage: number; // C3H8
+  nButanePercentage: number; // C4H10
+  isoButanePercentage: number; // C4H10
+  pentanePercentage: number; // C5H12
+  hydrogenPercentage: number; // H2
+  ethylenePercentage: number; // C2H4
+  propylenePercentage: number; // C3H6
+  butylenePercentage: number; // C4H8
+  acetylenePercentage: number; // C2H2
+  hydrogenSulfidePercentage: number; // H2S
+  carbonMonoxidePercentage: number; // CO
+  carbonDioxidePercentage: number; // CO2
+  nitrogenPercentage: number; // N2
+  oxygenPercentage: number; // O2
 }
 
 export interface ExternalConditions {
   boilerLoadPercentage: number; // ηк.а
-  airMoistureContent: number; // dв
-  gasMoistureContent: number; // dг
+  airHumidityForCombustion: number; // dв
+  gasHumidityForCombustion: number; // dг
   feedWaterTemperature: number; // tп.в
   boilerRoomAirTemperature: number; // tо.в
-  suppliedGasTemperature: number; // tг
+  gasInletTemperature: number; // tг
   flueGasPressure: number; // Pт
 }
-export interface BurnerParameters {
+export interface FurnanceCharacteristics {
   screenContaminationFactor: number; // ζ
 }
 
@@ -37,6 +37,6 @@ export interface ConvectivePackageParameters {
 export interface CreateCalculationDto {
   fuelComposition: FuelComposition;
   externalConditions: ExternalConditions;
-  burnerParameters: BurnerParameters;
+  furnanceCharacteristics: FurnanceCharacteristics;
   convectivePackagesParameters: ConvectivePackageParameters[];
 }

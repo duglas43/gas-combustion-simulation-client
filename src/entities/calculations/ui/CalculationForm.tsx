@@ -19,67 +19,67 @@ const schema = yup.object().shape({
   fuelComposition: yup
     .object()
     .shape({
-      methane: yup
+      methanePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      ethane: yup
+      ethanePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      propane: yup
+      propanePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      nButane: yup
+      nButanePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      isoButane: yup
+      isoButanePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      pentane: yup
+      pentanePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      hydrogen: yup
+      hydrogenPercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      ethylene: yup
+      ethylenePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      propylene: yup
+      propylenePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      butylene: yup
+      butylenePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      acetylene: yup
+      acetylenePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      hydrogenSulfide: yup
+      hydrogenSulfidePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      carbonMonoxide: yup
+      carbonMonoxidePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      carbonDioxide: yup
+      carbonDioxidePercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      nitrogen: yup
+      nitrogenPercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
-      oxygen: yup
+      oxygenPercentage: yup
         .number()
         .required()
         .max(100, "The value must be less than 100"),
@@ -92,14 +92,14 @@ const schema = yup.object().shape({
     ),
   externalConditions: yup.object().shape({
     boilerLoadPercentage: yup.number().required(),
-    airMoistureContent: yup.number().required(),
-    gasMoistureContent: yup.number().required(),
+    airHumidityForCombustion: yup.number().required(),
+    gasHumidityForCombustion: yup.number().required(),
     feedWaterTemperature: yup.number().required(),
     boilerRoomAirTemperature: yup.number().required(),
-    suppliedGasTemperature: yup.number().required(),
+    gasInletTemperature: yup.number().required(),
     flueGasPressure: yup.number().required(),
   }),
-  burnerParameters: yup.object().shape({
+  furnanceCharacteristics: yup.object().shape({
     screenContaminationFactor: yup.number().required(),
   }),
   convectivePackagesParameters: yup.array().of(
@@ -117,33 +117,33 @@ export const CalculationForm: FC<CalculationFormProps> = ({
   const formik = useFormik<CreateCalculationDto>({
     initialValues: {
       fuelComposition: {
-        methane: 0,
-        ethane: 0,
-        propane: 0,
-        nButane: 0,
-        isoButane: 0,
-        pentane: 0,
-        hydrogen: 0,
-        ethylene: 0,
-        propylene: 0,
-        butylene: 0,
-        acetylene: 0,
-        hydrogenSulfide: 0,
-        carbonMonoxide: 0,
-        carbonDioxide: 0,
-        nitrogen: 0,
-        oxygen: 0,
+        methanePercentage: 0,
+        ethanePercentage: 0,
+        propanePercentage: 0,
+        nButanePercentage: 0,
+        isoButanePercentage: 0,
+        pentanePercentage: 0,
+        hydrogenPercentage: 0,
+        ethylenePercentage: 0,
+        propylenePercentage: 0,
+        butylenePercentage: 0,
+        acetylenePercentage: 0,
+        hydrogenSulfidePercentage: 0,
+        carbonMonoxidePercentage: 0,
+        carbonDioxidePercentage: 0,
+        nitrogenPercentage: 0,
+        oxygenPercentage: 0,
       },
       externalConditions: {
         boilerLoadPercentage: 0,
-        airMoistureContent: 0,
-        gasMoistureContent: 0,
+        airHumidityForCombustion: 0,
+        gasHumidityForCombustion: 0,
         feedWaterTemperature: 0,
         boilerRoomAirTemperature: 0,
-        suppliedGasTemperature: 0,
+        gasInletTemperature: 0,
         flueGasPressure: 0,
       },
-      burnerParameters: {
+      furnanceCharacteristics: {
         screenContaminationFactor: 0,
       },
       convectivePackagesParameters: [
@@ -188,11 +188,11 @@ export const CalculationForm: FC<CalculationFormProps> = ({
         <Typography variant="h5">Fuel Composition</Typography>
         <TextField
           fullWidth
-          id="methane"
+          id="methanePercentage"
           type="number"
           size="small"
-          label="Methane (CH4)"
-          value={formik.values.fuelComposition.methane}
+          label="MethanePercentage (CH4)"
+          value={formik.values.fuelComposition.methanePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -200,14 +200,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.methane"
+          name="fuelComposition.methanePercentage"
           error={
-            !!formik.touched.fuelComposition?.methane &&
-            !!formik.errors.fuelComposition?.methane
+            !!formik.touched.fuelComposition?.methanePercentage &&
+            !!formik.errors.fuelComposition?.methanePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.methane &&
-            formik.errors.fuelComposition?.methane
+            formik.touched.fuelComposition?.methanePercentage &&
+            formik.errors.fuelComposition?.methanePercentage
           }
         />
         <TextField
@@ -215,7 +215,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Ethane (C2H6)"
-          value={formik.values.fuelComposition.ethane}
+          value={formik.values.fuelComposition.ethanePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -223,14 +223,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.ethane"
+          name="fuelComposition.ethanePercentage"
           error={
-            !!formik.touched.fuelComposition?.ethane &&
-            !!formik.errors.fuelComposition?.ethane
+            !!formik.touched.fuelComposition?.ethanePercentage &&
+            !!formik.errors.fuelComposition?.ethanePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.ethane &&
-            formik.errors.fuelComposition?.ethane
+            formik.touched.fuelComposition?.ethanePercentage &&
+            formik.errors.fuelComposition?.ethanePercentage
           }
         />
         <TextField
@@ -238,7 +238,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Propane (C3H8)"
-          value={formik.values.fuelComposition.propane}
+          value={formik.values.fuelComposition.propanePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -246,22 +246,22 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.propane"
+          name="fuelComposition.propanePercentage"
           error={
-            !!formik.touched.fuelComposition?.propane &&
-            !!formik.errors.fuelComposition?.propane
+            !!formik.touched.fuelComposition?.propanePercentage &&
+            !!formik.errors.fuelComposition?.propanePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.propane &&
-            formik.errors.fuelComposition?.propane
+            formik.touched.fuelComposition?.propanePercentage &&
+            formik.errors.fuelComposition?.propanePercentage
           }
         />
         <TextField
           fullWidth
           type="number"
           size="small"
-          label="nButane (C4H10)"
-          value={formik.values.fuelComposition.nButane}
+          label="nButanePercentage (C4H10)"
+          value={formik.values.fuelComposition.nButanePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -269,22 +269,22 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.nButane"
+          name="fuelComposition.nButanePercentage"
           error={
-            !!formik.touched.fuelComposition?.nButane &&
-            !!formik.errors.fuelComposition?.nButane
+            !!formik.touched.fuelComposition?.nButanePercentage &&
+            !!formik.errors.fuelComposition?.nButanePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.nButane &&
-            formik.errors.fuelComposition?.nButane
+            formik.touched.fuelComposition?.nButanePercentage &&
+            formik.errors.fuelComposition?.nButanePercentage
           }
         />
         <TextField
           fullWidth
           type="number"
           size="small"
-          label="isoButane (C4H10)"
-          value={formik.values.fuelComposition.isoButane}
+          label="isoButanePercentage (C4H10)"
+          value={formik.values.fuelComposition.isoButanePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -292,14 +292,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.isoButane"
+          name="fuelComposition.isoButanePercentage"
           error={
-            !!formik.touched.fuelComposition?.isoButane &&
-            !!formik.errors.fuelComposition?.isoButane
+            !!formik.touched.fuelComposition?.isoButanePercentage &&
+            !!formik.errors.fuelComposition?.isoButanePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.isoButane &&
-            formik.errors.fuelComposition?.isoButane
+            formik.touched.fuelComposition?.isoButanePercentage &&
+            formik.errors.fuelComposition?.isoButanePercentage
           }
         />
         <TextField
@@ -307,7 +307,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Pentane (C5H12)"
-          value={formik.values.fuelComposition.pentane}
+          value={formik.values.fuelComposition.pentanePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -315,14 +315,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.pentane"
+          name="fuelComposition.pentanePercentage"
           error={
-            !!formik.touched.fuelComposition?.pentane &&
-            !!formik.errors.fuelComposition?.pentane
+            !!formik.touched.fuelComposition?.pentanePercentage &&
+            !!formik.errors.fuelComposition?.pentanePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.pentane &&
-            formik.errors.fuelComposition?.pentane
+            formik.touched.fuelComposition?.pentanePercentage &&
+            formik.errors.fuelComposition?.pentanePercentage
           }
         />
         <TextField
@@ -330,7 +330,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Hydrogen (H2)"
-          value={formik.values.fuelComposition.hydrogen}
+          value={formik.values.fuelComposition.hydrogenPercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -338,14 +338,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.hydrogen"
+          name="fuelComposition.hydrogenPercentage"
           error={
-            !!formik.touched.fuelComposition?.hydrogen &&
-            !!formik.errors.fuelComposition?.hydrogen
+            !!formik.touched.fuelComposition?.hydrogenPercentage &&
+            !!formik.errors.fuelComposition?.hydrogenPercentage
           }
           helperText={
-            formik.touched.fuelComposition?.hydrogen &&
-            formik.errors.fuelComposition?.hydrogen
+            formik.touched.fuelComposition?.hydrogenPercentage &&
+            formik.errors.fuelComposition?.hydrogenPercentage
           }
         />
         <TextField
@@ -353,7 +353,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Ethylene (C2H4)"
-          value={formik.values.fuelComposition.ethylene}
+          value={formik.values.fuelComposition.ethylenePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -361,14 +361,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.ethylene"
+          name="fuelComposition.ethylenePercentage"
           error={
-            !!formik.touched.fuelComposition?.ethylene &&
-            !!formik.errors.fuelComposition?.ethylene
+            !!formik.touched.fuelComposition?.ethylenePercentage &&
+            !!formik.errors.fuelComposition?.ethylenePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.ethylene &&
-            formik.errors.fuelComposition?.ethylene
+            formik.touched.fuelComposition?.ethylenePercentage &&
+            formik.errors.fuelComposition?.ethylenePercentage
           }
         />
         <TextField
@@ -376,7 +376,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Propylene (C3H6)"
-          value={formik.values.fuelComposition.propylene}
+          value={formik.values.fuelComposition.propylenePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -384,14 +384,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.propylene"
+          name="fuelComposition.propylenePercentage"
           error={
-            !!formik.touched.fuelComposition?.propylene &&
-            !!formik.errors.fuelComposition?.propylene
+            !!formik.touched.fuelComposition?.propylenePercentage &&
+            !!formik.errors.fuelComposition?.propylenePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.propylene &&
-            formik.errors.fuelComposition?.propylene
+            formik.touched.fuelComposition?.propylenePercentage &&
+            formik.errors.fuelComposition?.propylenePercentage
           }
         />
         <TextField
@@ -399,7 +399,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Butylene (C4H8)"
-          value={formik.values.fuelComposition.butylene}
+          value={formik.values.fuelComposition.butylenePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -407,14 +407,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.butylene"
+          name="fuelComposition.butylenePercentage"
           error={
-            !!formik.touched.fuelComposition?.butylene &&
-            !!formik.errors.fuelComposition?.butylene
+            !!formik.touched.fuelComposition?.butylenePercentage &&
+            !!formik.errors.fuelComposition?.butylenePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.butylene &&
-            formik.errors.fuelComposition?.butylene
+            formik.touched.fuelComposition?.butylenePercentage &&
+            formik.errors.fuelComposition?.butylenePercentage
           }
         />
         <TextField
@@ -422,7 +422,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Acetylene (C2H2)"
-          value={formik.values.fuelComposition.acetylene}
+          value={formik.values.fuelComposition.acetylenePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -430,14 +430,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.acetylene"
+          name="fuelComposition.acetylenePercentage"
           error={
-            !!formik.touched.fuelComposition?.acetylene &&
-            !!formik.errors.fuelComposition?.acetylene
+            !!formik.touched.fuelComposition?.acetylenePercentage &&
+            !!formik.errors.fuelComposition?.acetylenePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.acetylene &&
-            formik.errors.fuelComposition?.acetylene
+            formik.touched.fuelComposition?.acetylenePercentage &&
+            formik.errors.fuelComposition?.acetylenePercentage
           }
         />
         <TextField
@@ -445,7 +445,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="HydrogenSulfide (H2S)"
-          value={formik.values.fuelComposition.hydrogenSulfide}
+          value={formik.values.fuelComposition.hydrogenSulfidePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -453,14 +453,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.hydrogenSulfide"
+          name="fuelComposition.hydrogenSulfidePercentage"
           error={
-            !!formik.touched.fuelComposition?.hydrogenSulfide &&
-            !!formik.errors.fuelComposition?.hydrogenSulfide
+            !!formik.touched.fuelComposition?.hydrogenSulfidePercentage &&
+            !!formik.errors.fuelComposition?.hydrogenSulfidePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.hydrogenSulfide &&
-            formik.errors.fuelComposition?.hydrogenSulfide
+            formik.touched.fuelComposition?.hydrogenSulfidePercentage &&
+            formik.errors.fuelComposition?.hydrogenSulfidePercentage
           }
         />
         <TextField
@@ -468,7 +468,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="CarbonMonoxide (CO)"
-          value={formik.values.fuelComposition.carbonMonoxide}
+          value={formik.values.fuelComposition.carbonMonoxidePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -476,14 +476,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.carbonMonoxide"
+          name="fuelComposition.carbonMonoxidePercentage"
           error={
-            !!formik.touched.fuelComposition?.carbonMonoxide &&
-            !!formik.errors.fuelComposition?.carbonMonoxide
+            !!formik.touched.fuelComposition?.carbonMonoxidePercentage &&
+            !!formik.errors.fuelComposition?.carbonMonoxidePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.carbonMonoxide &&
-            formik.errors.fuelComposition?.carbonMonoxide
+            formik.touched.fuelComposition?.carbonMonoxidePercentage &&
+            formik.errors.fuelComposition?.carbonMonoxidePercentage
           }
         />
         <TextField
@@ -491,7 +491,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="CarbonDioxide (CO2)"
-          value={formik.values.fuelComposition.carbonDioxide}
+          value={formik.values.fuelComposition.carbonDioxidePercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -499,14 +499,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.carbonDioxide"
+          name="fuelComposition.carbonDioxidePercentage"
           error={
-            !!formik.touched.fuelComposition?.carbonDioxide &&
-            !!formik.errors.fuelComposition?.carbonDioxide
+            !!formik.touched.fuelComposition?.carbonDioxidePercentage &&
+            !!formik.errors.fuelComposition?.carbonDioxidePercentage
           }
           helperText={
-            formik.touched.fuelComposition?.carbonDioxide &&
-            formik.errors.fuelComposition?.carbonDioxide
+            formik.touched.fuelComposition?.carbonDioxidePercentage &&
+            formik.errors.fuelComposition?.carbonDioxidePercentage
           }
         />
         <TextField
@@ -514,7 +514,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Nitrogen (N2)"
-          value={formik.values.fuelComposition.nitrogen}
+          value={formik.values.fuelComposition.nitrogenPercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -522,14 +522,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.nitrogen"
+          name="fuelComposition.nitrogenPercentage"
           error={
-            !!formik.touched.fuelComposition?.nitrogen &&
-            !!formik.errors.fuelComposition?.nitrogen
+            !!formik.touched.fuelComposition?.nitrogenPercentage &&
+            !!formik.errors.fuelComposition?.nitrogenPercentage
           }
           helperText={
-            formik.touched.fuelComposition?.nitrogen &&
-            formik.errors.fuelComposition?.nitrogen
+            formik.touched.fuelComposition?.nitrogenPercentage &&
+            formik.errors.fuelComposition?.nitrogenPercentage
           }
         />
         <TextField
@@ -537,7 +537,7 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           type="number"
           size="small"
           label="Oxygen (O2)"
-          value={formik.values.fuelComposition.oxygen}
+          value={formik.values.fuelComposition.oxygenPercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           slotProps={{
@@ -545,14 +545,14 @@ export const CalculationForm: FC<CalculationFormProps> = ({
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             },
           }}
-          name="fuelComposition.oxygen"
+          name="fuelComposition.oxygenPercentage"
           error={
-            !!formik.touched.fuelComposition?.oxygen &&
-            !!formik.errors.fuelComposition?.oxygen
+            !!formik.touched.fuelComposition?.oxygenPercentage &&
+            !!formik.errors.fuelComposition?.oxygenPercentage
           }
           helperText={
-            formik.touched.fuelComposition?.oxygen &&
-            formik.errors.fuelComposition?.oxygen
+            formik.touched.fuelComposition?.oxygenPercentage &&
+            formik.errors.fuelComposition?.oxygenPercentage
           }
         />
         {formik.errors.fuelComposition && (
@@ -583,18 +583,18 @@ export const CalculationForm: FC<CalculationFormProps> = ({
         <TextField
           fullWidth
           label="Air Moisture Content"
-          value={formik.values.externalConditions.airMoistureContent}
+          value={formik.values.externalConditions.airHumidityForCombustion}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.airMoistureContent"
+          name="externalConditions.airHumidityForCombustion"
         />
         <TextField
           fullWidth
           label="Gas Moisture Content"
-          value={formik.values.externalConditions.gasMoistureContent}
+          value={formik.values.externalConditions.gasHumidityForCombustion}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.gasMoistureContent"
+          name="externalConditions.gasHumidityForCombustion"
         />
         <TextField
           fullWidth
@@ -615,10 +615,10 @@ export const CalculationForm: FC<CalculationFormProps> = ({
         <TextField
           fullWidth
           label="Supplied Gas Temperature"
-          value={formik.values.externalConditions.suppliedGasTemperature}
+          value={formik.values.externalConditions.gasInletTemperature}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.suppliedGasTemperature"
+          name="externalConditions.gasInletTemperature"
         />
         <TextField
           fullWidth
@@ -643,10 +643,12 @@ export const CalculationForm: FC<CalculationFormProps> = ({
         <TextField
           fullWidth
           label="Screen Contamination Factor"
-          value={formik.values.burnerParameters.screenContaminationFactor}
+          value={
+            formik.values.furnanceCharacteristics.screenContaminationFactor
+          }
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="burnerParameters.screenContaminationFactor"
+          name="furnanceCharacteristics.screenContaminationFactor"
         />
       </Box>
       <Box
