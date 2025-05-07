@@ -21,7 +21,14 @@ export const CalculationPage: FC = () => {
         <CalculationWidget />
       </Grid2>
       <Grid2 size={{ xs: 12, md: 6 }} sx={{ width: "100%" }}>
-        <CalculationWidget />
+        <iframe
+          src={
+            "http://localhost:3000/embed/dashboard/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZXNvdXJjZSI6eyJkYXNoYm9hcmQiOjJ9LCJwYXJhbXMiOnt9LCJleHAiOjE3MzYyMjY5MDYsImlhdCI6MTczNjIyNjMwNX0.4reM4R6YWf59AqwfrVtUDknEuuYJ4tL-rtVD2Pk50fY#bordered=true&titled=true"
+          }
+          width="100%"
+          height="100%"
+          frameBorder="0"
+        />
       </Grid2>
     </Grid2>
   );
