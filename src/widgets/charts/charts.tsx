@@ -4,8 +4,9 @@ import {
   useObservationsControllerFindQuery,
   useRuntimeControllerGetCurrentRuntimeQuery,
 } from "../../shared/api/openapi-generated";
-import { EfficiencyChart } from "../../entities/observations";
+import { LineChart } from "../../entities/observations";
 import Plot from "react-plotly.js";
+import type { Data, Layout } from "plotly.js";
 
 export const ChartsWidget: FC = () => {
   const { data: runtime } = useRuntimeControllerGetCurrentRuntimeQuery();
@@ -24,14 +25,14 @@ export const ChartsWidget: FC = () => {
 
   const currentEfficiency = data?.current?.efficiency ?? null;
 
-  const gaugeData = useMemo(() => {
+  const gaugeData: Data[] = useMemo(() => {
     if (currentEfficiency == null) {
       return [];
     }
 
     return [
       {
-        type: "indicator" as const,
+        type: "indicator",
         mode: "gauge+number",
         value: currentEfficiency,
         title: { text: "Current efficiency, %" },
@@ -52,17 +53,27 @@ export const ChartsWidget: FC = () => {
         number: {
           suffix: "%",
         },
-      },
+      } as Data,
     ];
   }, [currentEfficiency]);
+
+  const gaugeLayout: Partial<Layout> = {
+    autosize: true,
+    margin: { l: 20, r: 20, t: 40, b: 20 },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+  };
+
+  const commonChartProps = {
+    data,
+  } as const;
+
+  const isDataReady = !isLoading && !isError && data;
 
   return (
     <Box
       sx={{
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
       }}
     >
       <Grid2 container spacing={2} sx={{ flex: 1 }}>
@@ -70,14 +81,12 @@ export const ChartsWidget: FC = () => {
           <Paper
             elevation={1}
             sx={{
-              p: 2,
               height: 300,
+              p: 2,
               display: "flex",
               flexDirection: "column",
-              gap: 2,
             }}
           >
-            <Typography variant="h6">Current efficiency</Typography>
             <Box sx={{ flex: 1, minHeight: 250 }}>
               {currentEfficiency == null ? (
                 <Typography variant="body2" color="text.secondary">
@@ -86,12 +95,7 @@ export const ChartsWidget: FC = () => {
               ) : (
                 <Plot
                   data={gaugeData}
-                  layout={{
-                    autosize: true,
-                    margin: { l: 20, r: 20, t: 40, b: 20 },
-                    paper_bgcolor: "rgba(0,0,0,0)",
-                    plot_bgcolor: "rgba(0,0,0,0)",
-                  }}
+                  layout={gaugeLayout}
                   style={{ width: "100%", height: "100%" }}
                   config={{ displayModeBar: false, responsive: true }}
                 />
@@ -104,14 +108,12 @@ export const ChartsWidget: FC = () => {
           <Paper
             elevation={1}
             sx={{
-              p: 2,
               display: "flex",
               height: 300,
+              p: 2,
               flexDirection: "column",
-              gap: 2,
             }}
           >
-            <Typography variant="h6">Efficiency dynamics</Typography>
             <Box sx={{ flex: 1, height: 100 }}>
               {isLoading && <Typography variant="body2">Loading...</Typography>}
               {isError && (
@@ -119,8 +121,106 @@ export const ChartsWidget: FC = () => {
                   Failed to load observations
                 </Typography>
               )}
-              {!isLoading && !isError && <EfficiencyChart data={data} />}
+              {isDataReady && (
+                <LineChart
+                  {...commonChartProps}
+                  fieldName="efficiency"
+                  title="Efficiency"
+                  yAxisTitle="Efficiency, %"
+                />
+              )}
             </Box>
+          </Paper>
+        </Grid2>
+
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Paper elevation={1} sx={{ height: 300, p: 2 }}>
+            {isDataReady && (
+              <LineChart
+                {...commonChartProps}
+                fieldName="furnaceExitTemperature"
+                title="Furnace exit temperature"
+                yAxisTitle="Temperature, °C"
+              />
+            )}
+          </Paper>
+        </Grid2>
+
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Paper elevation={1} sx={{ height: 300, p: 2 }}>
+            {isDataReady && (
+              <LineChart
+                {...commonChartProps}
+                fieldName="firstConvectivePackageExitTemperature"
+                title="1st convective package exit temp"
+                yAxisTitle="Temperature, °C"
+              />
+            )}
+          </Paper>
+        </Grid2>
+
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Paper elevation={1} sx={{ height: 300, p: 2 }}>
+            {isDataReady && (
+              <LineChart
+                {...commonChartProps}
+                fieldName="secondConvectivePackageExitTemperature"
+                title="2nd convective package exit temp"
+                yAxisTitle="Temperature, °C"
+              />
+            )}
+          </Paper>
+        </Grid2>
+
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Paper elevation={1} sx={{ height: 300, p: 2 }}>
+            {isDataReady && (
+              <LineChart
+                {...commonChartProps}
+                fieldName="economizerExitTemperature"
+                title="Economizer exit temperature"
+                yAxisTitle="Temperature, °C"
+              />
+            )}
+          </Paper>
+        </Grid2>
+
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Paper elevation={1} sx={{ height: 300, p: 2 }}>
+            {isDataReady && (
+              <LineChart
+                {...commonChartProps}
+                fieldName="flueGasTemperature"
+                title="Flue gas temperature"
+                yAxisTitle="Temperature, °C"
+              />
+            )}
+          </Paper>
+        </Grid2>
+
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Paper elevation={1} sx={{ height: 300, p: 2 }}>
+            {isDataReady && (
+              <LineChart
+                {...commonChartProps}
+                fieldName="fuelConsumption"
+                title="Fuel consumption"
+                yAxisTitle="Fuel consumption"
+              />
+            )}
+          </Paper>
+        </Grid2>
+
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Paper elevation={1} sx={{ height: 300, p: 2 }}>
+            {isDataReady && (
+              <LineChart
+                {...commonChartProps}
+                fieldName="totalLosses"
+                title="Total losses"
+                yAxisTitle="Losses, %"
+              />
+            )}
           </Paper>
         </Grid2>
       </Grid2>
