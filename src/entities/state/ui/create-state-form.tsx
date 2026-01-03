@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import {
@@ -9,10 +9,10 @@ import {
   Typography,
   InputAdornment,
 } from "@mui/material";
-import { CreateCalculationDto } from "../type";
+import { CreateStateDto } from "../../../shared/api/openapi-generated";
 
-export interface CalculationFormProps extends Omit<BoxProps, "onSubmit"> {
-  onSubmit: (data: CreateCalculationDto) => void;
+export interface CreateStateFormProps extends Omit<BoxProps, "onSubmit"> {
+  onSubmit: (data: CreateStateDto) => void;
 }
 
 const schema = yup.object().shape({
@@ -90,37 +90,38 @@ const schema = yup.object().shape({
       (value) =>
         Object.values(value).reduce((acc, curr) => acc + curr, 0) === 100
     ),
-  externalConditions: yup.object().shape({
-    boilerLoadPercentage: yup.number().required(),
+  boilerCharacteristics: yup.object().shape({
+    loadPercentage: yup.number().required(),
     airHumidityForCombustion: yup.number().required(),
     gasHumidityForCombustion: yup.number().required(),
     feedWaterTemperature: yup.number().required(),
-    boilerRoomAirTemperature: yup.number().required(),
+    roomAirTemperature: yup.number().required(),
     gasInletTemperature: yup.number().required(),
-    flueGasPressure: yup.number().required(),
   }),
-  furnanceCharacteristics: yup.object().shape({
+  furnaceCharacteristics: yup.object().shape({
     screenContaminationFactor: yup.number().required(),
   }),
   convectivePackagesParameters: yup.array().of(
     yup.object().shape({
       id: yup.number().required(),
       wallBlacknessDegree: yup.number().required(),
+      tubesPerRow: yup.number().optional(),
+      minCrossSectionDimension: yup.number().optional(),
     })
   ),
 });
 
-export const CalculationForm: FC<CalculationFormProps> = ({
+export const CreateStateForm: FC<CreateStateFormProps> = ({
   onSubmit,
   ...props
 }) => {
-  const formik = useFormik<CreateCalculationDto>({
+  const formik = useFormik<CreateStateDto>({
     initialValues: {
       fuelComposition: {
-        methanePercentage: 0,
-        ethanePercentage: 0,
-        propanePercentage: 0,
-        nButanePercentage: 0,
+        methanePercentage: 98.33,
+        ethanePercentage: 0.3,
+        propanePercentage: 0.12,
+        nButanePercentage: 0.15,
         isoButanePercentage: 0,
         pentanePercentage: 0,
         hydrogenPercentage: 0,
@@ -130,30 +131,33 @@ export const CalculationForm: FC<CalculationFormProps> = ({
         acetylenePercentage: 0,
         hydrogenSulfidePercentage: 0,
         carbonMonoxidePercentage: 0,
-        carbonDioxidePercentage: 0,
-        nitrogenPercentage: 0,
+        carbonDioxidePercentage: 0.1,
+        nitrogenPercentage: 1,
         oxygenPercentage: 0,
       },
-      externalConditions: {
-        boilerLoadPercentage: 0,
-        airHumidityForCombustion: 0,
+      boilerCharacteristics: {
+        loadPercentage: 97.86,
+        airHumidityForCombustion: 13,
         gasHumidityForCombustion: 0,
-        feedWaterTemperature: 0,
-        boilerRoomAirTemperature: 0,
-        gasInletTemperature: 0,
-        flueGasPressure: 0,
+        feedWaterTemperature: 85,
+        roomAirTemperature: 25,
+        gasInletTemperature: 16,
       },
-      furnanceCharacteristics: {
-        screenContaminationFactor: 0,
+      furnaceCharacteristics: {
+        screenContaminationFactor: 0.65,
       },
       convectivePackagesParameters: [
         {
-          id: 0,
-          wallBlacknessDegree: 0,
+          id: 1,
+          wallBlacknessDegree: 0.8,
+          tubesPerRow: 16,
+          minCrossSectionDimension: 1.64,
         },
         {
-          id: 1,
-          wallBlacknessDegree: 0,
+          id: 2,
+          wallBlacknessDegree: 0.8,
+          tubesPerRow: 11,
+          minCrossSectionDimension: 1.08,
         },
       ],
     },
@@ -162,6 +166,8 @@ export const CalculationForm: FC<CalculationFormProps> = ({
       onSubmit(values);
     },
   });
+
+  console.log({ formikErrors: formik.errors });
 
   return (
     <Box
@@ -571,62 +577,54 @@ export const CalculationForm: FC<CalculationFormProps> = ({
           borderRadius: 2,
         }}
       >
-        <Typography variant="h5">External Conditions</Typography>
+        <Typography variant="h5">Boiler Characteristics</Typography>
         <TextField
           fullWidth
           label="Boiler Load Percentage"
-          value={formik.values.externalConditions.boilerLoadPercentage}
+          value={formik.values.boilerCharacteristics.loadPercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.boilerLoadPercentage"
+          name="boilerCharacteristics.loadPercentage"
         />
         <TextField
           fullWidth
           label="Air Moisture Content"
-          value={formik.values.externalConditions.airHumidityForCombustion}
+          value={formik.values.boilerCharacteristics.airHumidityForCombustion}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.airHumidityForCombustion"
+          name="boilerCharacteristics.airHumidityForCombustion"
         />
         <TextField
           fullWidth
           label="Gas Moisture Content"
-          value={formik.values.externalConditions.gasHumidityForCombustion}
+          value={formik.values.boilerCharacteristics.gasHumidityForCombustion}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.gasHumidityForCombustion"
+          name="boilerCharacteristics.gasHumidityForCombustion"
         />
         <TextField
           fullWidth
           label="Feed Water Temperature"
-          value={formik.values.externalConditions.feedWaterTemperature}
+          value={formik.values.boilerCharacteristics.feedWaterTemperature}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.feedWaterTemperature"
+          name="boilerCharacteristics.feedWaterTemperature"
         />
         <TextField
           fullWidth
           label="Boiler Room Air Temperature"
-          value={formik.values.externalConditions.boilerRoomAirTemperature}
+          value={formik.values.boilerCharacteristics.roomAirTemperature}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.boilerRoomAirTemperature"
+          name="boilerCharacteristics.roomAirTemperature"
         />
         <TextField
           fullWidth
           label="Supplied Gas Temperature"
-          value={formik.values.externalConditions.gasInletTemperature}
+          value={formik.values.boilerCharacteristics.gasInletTemperature}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="externalConditions.gasInletTemperature"
-        />
-        <TextField
-          fullWidth
-          label="Flue Gas Pressure"
-          value={formik.values.externalConditions.flueGasPressure}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          name="externalConditions.flueGasPressure"
+          name="boilerCharacteristics.gasInletTemperature"
         />
       </Box>
       <Box
@@ -643,12 +641,10 @@ export const CalculationForm: FC<CalculationFormProps> = ({
         <TextField
           fullWidth
           label="Screen Contamination Factor"
-          value={
-            formik.values.furnanceCharacteristics.screenContaminationFactor
-          }
+          value={formik.values.furnaceCharacteristics.screenContaminationFactor}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          name="furnanceCharacteristics.screenContaminationFactor"
+          name="furnaceCharacteristics.screenContaminationFactor"
         />
       </Box>
       <Box

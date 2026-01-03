@@ -1,1 +1,1 @@
-export { CalculationPage } from "./Calculation";
+export { MainPage } from "./main";
