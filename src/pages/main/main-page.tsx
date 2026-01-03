@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Grid2 } from "@mui/material";
-import { CreateStateWidget } from "../../widgets/CreateStateWidget/create-state";
+import { CreateStateWidget } from "../../widgets/create-state-widget/create-state";
 
 export const MainPage: FC = () => {
   return (

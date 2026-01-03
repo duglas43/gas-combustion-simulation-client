@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Route, Routes } from "react-router-dom";
 import { MainPage } from "../pages";
-import { AppLayout } from "../widgets/AppLayout";
+import { AppLayout } from "../widgets/app-layout";
 
 const App: FC = () => {
   return (

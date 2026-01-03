@@ -1,1 +1,1 @@
-export * from "./errorThunkMiddleware";
+export * from "./error-thunk-middleware";
