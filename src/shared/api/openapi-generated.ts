@@ -32,21 +32,21 @@ const injectedRtkApi = api
             to: queryArg.to,
           },
         }),
-        providesTags: ["observations"],
+        providesTags: ["observations", "simulation"],
       }),
       runtimeControllerGetCurrentRuntime: build.query<
         RuntimeControllerGetCurrentRuntimeApiResponse,
         RuntimeControllerGetCurrentRuntimeApiArg
       >({
         query: () => ({ url: `/runtime` }),
-        providesTags: ["runtime"],
+        providesTags: ["runtime", "simulation"],
       }),
       stateControllerGetCurrentState: build.query<
         StateControllerGetCurrentStateApiResponse,
         StateControllerGetCurrentStateApiArg
       >({
         query: () => ({ url: `/state` }),
-        providesTags: ["state"],
+        providesTags: ["state", "simulation"],
       }),
       recommendationsControllerGetRecommendations: build.query<
         RecommendationsControllerGetRecommendationsApiResponse,
@@ -60,7 +60,7 @@ const injectedRtkApi = api
         WarningsControllerGetWarningsApiArg
       >({
         query: () => ({ url: `/warnings` }),
-        providesTags: ["warnings"],
+        providesTags: ["warnings", "simulation"],
       }),
       simulationControllerCreate: build.mutation<
         SimulationControllerCreateApiResponse,
@@ -105,6 +105,13 @@ const injectedRtkApi = api
         query: () => ({ url: `/simulation/pause`, method: "POST" }),
         invalidatesTags: ["simulation"],
       }),
+      simulationControllerReset: build.mutation<
+        SimulationControllerResetApiResponse,
+        SimulationControllerResetApiArg
+      >({
+        query: () => ({ url: `/simulation/reset`, method: "POST" }),
+        invalidatesTags: ["simulation"],
+      }),
     }),
     overrideExisting: false,
   });
@@ -142,6 +149,8 @@ export type SimulationControllerStopApiResponse = unknown;
 export type SimulationControllerStopApiArg = void;
 export type SimulationControllerPauseApiResponse = unknown;
 export type SimulationControllerPauseApiArg = void;
+export type SimulationControllerResetApiResponse = unknown;
+export type SimulationControllerResetApiArg = void;
 export type ObservationDto = {
   time: string;
   timestamp: number;
@@ -272,4 +281,5 @@ export const {
   useSimulationControllerStartMutation,
   useSimulationControllerStopMutation,
   useSimulationControllerPauseMutation,
+  useSimulationControllerResetMutation,
 } = injectedRtkApi;

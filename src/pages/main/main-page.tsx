@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Grid2 } from "@mui/material";
 import { CreateStateWidget } from "../../widgets/create-state-widget/create-state";
+import { ChartsWidget } from "../../widgets/charts";
 
 export const MainPage: FC = () => {
   return (
@@ -19,6 +20,14 @@ export const MainPage: FC = () => {
         }}
       >
         <CreateStateWidget />
+      </Grid2>
+      <Grid2
+        size={{ xs: 12, md: 6 }}
+        sx={{
+          width: "100%",
+        }}
+      >
+        <ChartsWidget />
       </Grid2>
     </Grid2>
   );

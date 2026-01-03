@@ -13,6 +13,9 @@ import {
   useSimulationControllerStartMutation,
   useSimulationControllerStopMutation,
   Status,
+  useSimulationControllerUpdateMutation,
+  useSimulationControllerResetMutation,
+  useStateControllerGetCurrentStateQuery,
 } from "../../shared/api/openapi-generated";
 import { RuntimeInfo } from "../../entities/runtime";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,19 +34,25 @@ export const RuntimeToolbar: FC = () => {
       pollingInterval: 200,
     }
   );
+  const { data: currentState } = useStateControllerGetCurrentStateQuery();
+  const [updateSimulation, { isLoading: isUpdating }] =
+    useSimulationControllerUpdateMutation();
   const [startSimulation, { isLoading: isStarting }] =
     useSimulationControllerStartMutation();
   const [pauseSimulation, { isLoading: isPausing }] =
     useSimulationControllerPauseMutation();
   const [stopSimulation, { isLoading: isStopping }] =
     useSimulationControllerStopMutation();
+  const [resetSimulation, { isLoading: isResetting }] =
+    useSimulationControllerResetMutation();
 
   const isRunning = runtime?.status === Status.Running;
   const isPaused = runtime?.status === Status.Paused;
+  const isStateNotInitialized = !currentState;
 
   const isDisabledAll = useMemo(
-    () => isStarting || isPausing || isStopping,
-    [isStarting, isPausing, isStopping]
+    () => isStarting || isPausing || isStopping || isUpdating || isResetting,
+    [isStarting, isPausing, isStopping, isUpdating, isResetting]
   );
 
   const handleStart = async () => {
@@ -57,11 +66,17 @@ export const RuntimeToolbar: FC = () => {
   const handleStop = async () => {
     await stopSimulation();
   };
+  const handleReset = async () => {
+    await resetSimulation();
+  };
 
   const handleSpeedChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     if (!Number.isNaN(value)) {
       dispatch(setSelectedSpeed(value));
+      updateSimulation({
+        updateSimulationDto: { runtime: { speedUpFactor: value } },
+      });
     }
   };
 
@@ -108,7 +123,7 @@ export const RuntimeToolbar: FC = () => {
             variant="contained"
             color="success"
             onClick={handleStart}
-            disabled={isDisabledAll || isRunning}
+            disabled={isDisabledAll || isRunning || isStateNotInitialized}
           >
             Start
           </Button>
@@ -127,6 +142,13 @@ export const RuntimeToolbar: FC = () => {
             disabled={isDisabledAll || (!isRunning && !isPaused)}
           >
             Stop
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={handleReset}
+            disabled={isDisabledAll || isRunning || isPaused}
+          >
+            Reset
           </Button>
         </Stack>
       </Toolbar>

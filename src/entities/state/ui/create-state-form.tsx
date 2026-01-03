@@ -167,8 +167,6 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
     },
   });
 
-  console.log({ formikErrors: formik.errors });
-
   return (
     <Box
       component="form"
@@ -584,6 +582,7 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
           value={formik.values.boilerCharacteristics.loadPercentage}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          type="number"
           name="boilerCharacteristics.loadPercentage"
         />
         <TextField
@@ -592,6 +591,7 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
           value={formik.values.boilerCharacteristics.airHumidityForCombustion}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          type="number"
           name="boilerCharacteristics.airHumidityForCombustion"
         />
         <TextField
@@ -600,6 +600,7 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
           value={formik.values.boilerCharacteristics.gasHumidityForCombustion}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          type="number"
           name="boilerCharacteristics.gasHumidityForCombustion"
         />
         <TextField
@@ -608,6 +609,7 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
           value={formik.values.boilerCharacteristics.feedWaterTemperature}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          type="number"
           name="boilerCharacteristics.feedWaterTemperature"
         />
         <TextField
@@ -616,6 +618,7 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
           value={formik.values.boilerCharacteristics.roomAirTemperature}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          type="number"
           name="boilerCharacteristics.roomAirTemperature"
         />
         <TextField
@@ -624,6 +627,7 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
           value={formik.values.boilerCharacteristics.gasInletTemperature}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          type="number"
           name="boilerCharacteristics.gasInletTemperature"
         />
       </Box>
@@ -644,6 +648,7 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
           value={formik.values.furnaceCharacteristics.screenContaminationFactor}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          type="number"
           name="furnaceCharacteristics.screenContaminationFactor"
         />
       </Box>
@@ -677,6 +682,8 @@ export const CreateStateForm: FC<CreateStateFormProps> = ({
                 value={convectivePackage.wallBlacknessDegree}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                type="number"
+                type="number"
                 name={`convectivePackagesParameters[${index}].wallBlacknessDegree`}
               />
             </Box>
