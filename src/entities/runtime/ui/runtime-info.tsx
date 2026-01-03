@@ -18,7 +18,9 @@ const statusColor: Record<
 };
 
 export const RuntimeInfo: FC<RuntimeInfoProps> = ({ runtime }) => {
-  const formattedTime = runtime?.currentTime;
+  const formattedTime = runtime?.currentTime
+    ? runtime.currentTime / 1000
+    : "--:--:--";
 
   return (
     <Stack direction="row" spacing={3} alignItems="center">
